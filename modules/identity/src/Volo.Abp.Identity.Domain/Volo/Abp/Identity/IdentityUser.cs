@@ -16,7 +16,7 @@ namespace Volo.Abp.Identity
     public class IdentityUser : FullAuditedAggregateRoot<Guid>, IUser, IMapTo<UserEto>
     {
         public virtual Guid? TenantId { get; protected set; }
-
+        
         public virtual long? SourceId{ get; set;}
 
         /// <summary>
@@ -84,6 +84,9 @@ namespace Volo.Abp.Identity
         /// 用户头像地址
         /// </summary>
         public virtual string Picture { get; set; }
+
+        
+        public virtual string DeviceNumber{ get; set;}
 
         /// <summary>
         /// Gets or sets a flag indicating if two factor authentication is enabled for this user.
