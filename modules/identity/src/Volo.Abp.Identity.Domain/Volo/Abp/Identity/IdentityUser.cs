@@ -80,6 +80,11 @@ namespace Volo.Abp.Identity
         public virtual bool PhoneNumberConfirmed { get; protected internal set; }
 
         /// <summary>
+        /// 用户头像地址
+        /// </summary>
+        public string Picture { get; set; }
+
+        /// <summary>
         /// Gets or sets a flag indicating if two factor authentication is enabled for this user.
         /// </summary>
         /// <value>True if 2fa is enabled, otherwise false.</value>
