@@ -17,6 +17,7 @@ namespace Volo.Abp.Identity
     {
         public virtual Guid? TenantId { get; protected set; }
 
+        pbulic virtual long? SourceId{ get; set;}
         /// <summary>
         /// Gets or sets the user name for this user.
         /// </summary>
