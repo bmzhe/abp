@@ -17,7 +17,8 @@ namespace Volo.Abp.Identity
     {
         public virtual Guid? TenantId { get; protected set; }
 
-        pbulic virtual long? SourceId{ get; set;}
+        public virtual long? SourceId{ get; set;}
+
         /// <summary>
         /// Gets or sets the user name for this user.
         /// </summary>
@@ -82,7 +83,7 @@ namespace Volo.Abp.Identity
         /// <summary>
         /// 用户头像地址
         /// </summary>
-        public string Picture { get; set; }
+        public virtual string Picture { get; set; }
 
         /// <summary>
         /// Gets or sets a flag indicating if two factor authentication is enabled for this user.
