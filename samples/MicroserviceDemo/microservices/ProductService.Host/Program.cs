@@ -24,7 +24,7 @@ namespace ProductService.Host
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.WithProperty("Application", "ProductService")
                 .Enrich.FromLogContext()
-                .WriteTo.File("Logs/logs.txt")
+                 .WriteTo.Console()
                 .WriteTo.Elasticsearch(
                     new ElasticsearchSinkOptions(new Uri(configuration["ElasticSearch:Url"]))
                     {

@@ -83,6 +83,9 @@ namespace BackendAdminAppGateway.Host
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
             context.Services.AddDataProtection()
                 .PersistKeysToStackExchangeRedis(redis, "MS-DataProtection-Keys");
+
+            PermissionManagementDbContext.TablePrefix = "tb_";
+            SettingManagementDbContext.TablePrefix = "tb_";
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

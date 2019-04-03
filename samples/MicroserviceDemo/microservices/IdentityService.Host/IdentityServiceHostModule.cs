@@ -86,6 +86,7 @@ namespace IdentityService.Host
                 .PersistKeysToStackExchangeRedis(redis, "MS-DataProtection-Keys");
 
             IdentityDbContext.TablePrefix = "tb_";
+            AbpAuditLoggingDbContext.TablePrefix = "tb_";
             PermissionManagementDbContext.TablePrefix = "tb_";
             SettingManagementDbContext.TablePrefix = "tb_";
         }
