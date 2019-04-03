@@ -3,7 +3,7 @@
     "BloggingService.Host": {
       "commandName": "Project",
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:21570",
+      "applicationUrl": "http://localhost:62157",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

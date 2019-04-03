@@ -85,6 +85,7 @@ namespace ProductService.Host
             context.Services.AddDataProtection()
                 .PersistKeysToStackExchangeRedis(redis, "MS-DataProtection-Keys");
 
+            AbpAuditLoggingDbContext.TablePrefix = ProductManagementDbContext.TablePrefix;
             PermissionManagementDbContext.TablePrefix = ProductManagementDbContext.TablePrefix;
             SettingManagementDbContext.TablePrefix = ProductManagementDbContext.TablePrefix;
         }

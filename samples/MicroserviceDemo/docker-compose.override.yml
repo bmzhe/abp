@@ -1,57 +1,57 @@
 version: '3.0'
 services:
-  sqlserver:
-    environment:
-      - SA_PASSWORD=yourStrong(!)Password
-      - ACCEPT_EULA=Y
-    ports:
-      - "1433"
-
-  mongodb:
-    ports:
-      - "27017"
-
-  rabbitmq:
-    ports:
-      - "15672"
-      - "5672"
-
-  redis:
-    ports:
-      - "6379"
-
-  elasticsearch:
-    volumes:
-      - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-    environment:
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-      - "9200"
-
-  logstash:
-    volumes:
-      - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-      - ./elk/logstash/pipeline:/usr/share/logstash/pipeline:ro
-    environment:
-      - "LS_JAVA_OPTS=-Xmx256m -Xms256m"
-    ports:
-      - "9600"
-      - "5000"
-
-  kibana:
-    volumes:
-      - ./elk/kibana/config/:/usr/share/kibana/config:ro
-    ports:
-      - 51510:5601
+#  sqlserver:
+#    environment:
+#      - SA_PASSWORD=yourStrong(!)Password
+#      - ACCEPT_EULA=Y
+#    ports:
+#      - "1433"
+#
+#  mongodb:
+#    ports:
+#      - "27017"
+#
+#  172.16.168.183:
+#    ports:
+#      - "15672"
+#      - "5672"
+#
+#  172.16.168.193:32379,ssl=false,password=Zykj2017:
+#    ports:
+#      - "6379"
+#
+#  elasticsearch:
+#    volumes:
+#      - ./elk/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+#    environment:
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ports:
+#      - "9200"
+#
+#  logstash:
+#    volumes:
+#      - ./elk/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+#      - ./elk/logstash/pipeline:/usr/share/logstash/pipeline:ro
+#    environment:
+#      - "LS_JAVA_OPTS=-Xmx256m -Xms256m"
+#    ports:
+#      - "9600"
+#      - "5000"
+#
+#  kibana:
+#    volumes:
+#      - ./elk/kibana/config/:/usr/share/kibana/config:ro
+#    ports:
+#      - 51510:5601
 
   internal-gateway:
     environment:
-      - ElasticSearch__Url=http://elasticsearch:9200
+#      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - Redis__Configuration=redis
+      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
+      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
       - ReRoutes__0__DownstreamHostAndPorts__0__Host=identity-service
       - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
       - ReRoutes__1__DownstreamHostAndPorts__0__Host=product-service
@@ -64,13 +64,13 @@ services:
 
   backend-admin-app-gateway:
     environment:
-      - ElasticSearch__Url=http://elasticsearch:9200
+#      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - RemoteServices__Default__BaseUrl=http://backend-admin-app-gateway/
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - Redis__Configuration=redis
+      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
+      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
       - ReRoutes__0__DownstreamHostAndPorts__0__Host=identity-service
       - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
       - ReRoutes__1__DownstreamHostAndPorts__0__Host=product-service
@@ -81,12 +81,12 @@ services:
 
   public-website-gateway:
     environment:
-      - ElasticSearch__Url=http://elasticsearch:9200
+#      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - Redis__Configuration=redis
+      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
+      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
       - ReRoutes__0__DownstreamHostAndPorts__0__Host=product-service
       - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
       - ReRoutes__1__DownstreamHostAndPorts__0__Host=blogging-service
@@ -97,72 +97,72 @@ services:
 
   blogging-service:
     environment:
-      - ElasticSearch__Url=http://elasticsearch:9200
+#      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
       - ConnectionStrings__Blogging=mongodb://mongodb|ms_Blogging
-      - Redis__Configuration=redis
-      - RabbitMQ__Connections__Default__HostName=rabbitmq
+      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - RabbitMQ__Connections__Default__HostName=172.16.168.183
       - RemoteServices__Default__BaseUrl=http://internal-gateway/
     ports:
       - 51521:80
 
   identity-service:
     environment:
-      - ElasticSearch__Url=http://elasticsearch:9200
+#      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - Redis__Configuration=redis
-      - RabbitMQ__Connections__Default__HostName=rabbitmq
+      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
+      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - RabbitMQ__Connections__Default__HostName=172.16.168.183
     ports:
       - 51522:80
 
   product-service:
     environment:
-      - ElasticSearch__Url=http://elasticsearch:9200
+#      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - ConnectionStrings__ProductManagement=Server=sqlserver;Database=ms_ProductManagement;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - Redis__Configuration=redis
-      - RabbitMQ__Connections__Default__HostName=rabbitmq
+      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
+      - ConnectionStrings__ProductManagement=Server=172.16.168.230; Database=ms.product;User Id=dev; Password=123456
+      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - RabbitMQ__Connections__Default__HostName=172.16.168.183
     ports:
       - 51523:80
 
   auth-server:
     environment:
-      - ElasticSearch__Url=http://elasticsearch:9200
+#      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - Redis__Configuration=redis
-      - RabbitMQ__Connections__Default__HostName=rabbitmq
+      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
+      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - RabbitMQ__Connections__Default__HostName=172.16.168.183
     ports:
       - 51511:51511
 
   backend-admin-app:
     environment:
-      - ElasticSearch__Url=http://elasticsearch:9200
+#      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
       - RemoteServices__Default__BaseUrl=http://backend-admin-app-gateway/
-      - Redis__Configuration=redis
+      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
     ports:
       - 51512:80
 
   public-website:
     environment:
-      - ElasticSearch__Url=http://elasticsearch:9200
+#      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
       - RemoteServices__Default__BaseUrl=http://public-website-gateway/
-      - Redis__Configuration=redis
+      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
     ports:
       - 51513:80

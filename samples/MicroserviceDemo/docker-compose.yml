@@ -1,34 +1,34 @@
 version: '3.0'
 
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server
-    volumes:
-      - dbdata:/var/opt/mssql
-  
-  mongodb:
-    image: mongo
-  
-  rabbitmq:
-    image: 'rabbitmq:3-management-alpine'
-
-  redis:
-    image: redis
-
-  elasticsearch:
-    image: 'docker.elastic.co/elasticsearch/elasticsearch:6.6.0'
-    volumes:
-      - esdata:/usr/share/elasticsearch/data
-
-  logstash:
-    image: 'docker.elastic.co/logstash/logstash:6.6.0'
-    depends_on:
-      - elasticsearch
-
-  kibana:
-    image: 'docker.elastic.co/kibana/kibana:6.6.0'
-    depends_on:
-      - elasticsearch
+#  sqlserver:
+#    image: mcr.microsoft.com/mssql/server
+#    volumes:
+#      - dbdata:/var/opt/mssql
+#  
+#  mongodb:
+#    image: mongo
+#  
+#  rabbitmq:
+#    image: 'rabbitmq:3-management-alpine'
+#
+#  redis:
+#    image: redis
+#
+#  elasticsearch:
+#    image: 'docker.elastic.co/elasticsearch/elasticsearch:6.6.0'
+#    volumes:
+#      - esdata:/usr/share/elasticsearch/data
+#
+#  logstash:
+#    image: 'docker.elastic.co/logstash/logstash:6.6.0'
+#    depends_on:
+#      - elasticsearch
+#
+#  kibana:
+#    image: 'docker.elastic.co/kibana/kibana:6.6.0'
+#    depends_on:
+#      - elasticsearch
 
   internal-gateway:
     image: 'volosoft/microservice-demo-internal-gateway:${TAG:-latest}'
@@ -36,9 +36,9 @@ services:
       context: ../../
       dockerfile: samples/MicroserviceDemo/gateways/InternalGateway.Host/Dockerfile
     depends_on:
-      - elasticsearch
-      - redis
-      - sqlserver
+#      - elasticsearch
+#      - redis
+#      - sqlserver
       - identity-service
       - product-service
       - blogging-service
@@ -49,9 +49,9 @@ services:
       context: ../../
       dockerfile: samples/MicroserviceDemo/gateways/BackendAdminAppGateway.Host/Dockerfile
     depends_on:
-      - elasticsearch
-      - redis
-      - sqlserver
+#      - elasticsearch
+#      - redis
+#      - sqlserver
       - identity-service
       - product-service
   
@@ -61,8 +61,8 @@ services:
       context: ../../
       dockerfile: samples/MicroserviceDemo/gateways/PublicWebSiteGateway.Host/Dockerfile
     depends_on:
-      - elasticsearch
-      - redis
+#      - elasticsearch
+#      - redis
       - blogging-service
       - product-service
   
@@ -72,9 +72,9 @@ services:
       context: ../../
       dockerfile: samples/MicroserviceDemo/microservices/BloggingService.Host/Dockerfile
     depends_on:
-      - elasticsearch
-      - mongodb
-      - redis
+#      - elasticsearch
+#      - mongodb
+#      - redis
   
   identity-service:
     image: 'volosoft/microservice-demo-identity-service:${TAG:-latest}'
@@ -82,10 +82,10 @@ services:
       context: ../../
       dockerfile: samples/MicroserviceDemo/microservices/IdentityService.Host/Dockerfile
     depends_on:
-      - elasticsearch
-      - rabbitmq
-      - redis
-      - sqlserver
+#      - elasticsearch
+#      - rabbitmq
+#      - redis
+#      - sqlserver
   
   product-service:
     image: 'volosoft/microservice-demo-product-service:${TAG:-latest}'
@@ -93,9 +93,9 @@ services:
       context: ../../
       dockerfile: samples/MicroserviceDemo/microservices/ProductService.Host/Dockerfile
     depends_on:
-      - elasticsearch
-      - sqlserver
-      - redis
+#      - elasticsearch
+#      - sqlserver
+#      - redis
   
   auth-server:
     image: 'volosoft/microservice-demo-auth-server:${TAG:-latest}'
@@ -103,9 +103,9 @@ services:
       context: ../../
       dockerfile: samples/MicroserviceDemo/applications/AuthServer.Host/Dockerfile
     depends_on:
-      - elasticsearch
-      - redis
-      - rabbitmq
+#      - elasticsearch
+#      - redis
+#      - rabbitmq
       - identity-service
   
   backend-admin-app:
@@ -114,7 +114,7 @@ services:
       context: ../../
       dockerfile: samples/MicroserviceDemo/applications/BackendAdminApp.Host/Dockerfile
     depends_on:
-      - elasticsearch
+#      - elasticsearch
       - backend-admin-app-gateway
   
   public-website:
@@ -123,9 +123,9 @@ services:
       context: ../../
       dockerfile: samples/MicroserviceDemo/applications/PublicWebSite.Host/Dockerfile
     depends_on:
-      - elasticsearch
+#      - elasticsearch
       - public-website-gateway
 
-volumes:
-  dbdata:
-  esdata:
+#volumes:
+#  dbdata:
+#  esdata:
