@@ -11,7 +11,7 @@ using Volo.Abp.Auditing;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Autofac;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.SqlServer;
+using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Guids;
 using Volo.Abp.Http.Client.IdentityModel;
@@ -32,7 +32,7 @@ namespace BloggingService.Host
     [DependsOn(
         typeof(AbpAutofacModule),
         typeof(AbpEventBusRabbitMqModule),
-        typeof(AbpEntityFrameworkCoreSqlServerModule),
+        typeof(AbpEntityFrameworkCoreMySQLModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
@@ -79,7 +79,7 @@ namespace BloggingService.Host
             
             Configure<AbpDbContextOptions>(options =>
             {
-                options.UseSqlServer();
+                options.UseMySQL();
             });
 
             Configure<BlogFileOptions>(options =>
@@ -100,7 +100,11 @@ namespace BloggingService.Host
 
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
             context.Services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, "MsDemo-DataProtection-Keys");
+                .PersistKeysToStackExchangeRedis(redis, "MS-DataProtection-Keys");
+
+            BloggingMongoDbContext.CollectionPrefix = "tb_";
+            PermissionManagementDbContext.TablePrefix = "tb_";
+            SettingManagementDbContext.TablePrefix = "tb_";
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

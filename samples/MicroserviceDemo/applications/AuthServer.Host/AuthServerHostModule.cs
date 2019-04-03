@@ -13,7 +13,7 @@ using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Autofac;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.SqlServer;
+using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.IdentityServer.EntityFrameworkCore;
@@ -35,7 +35,7 @@ namespace AuthServer.Host
         typeof(AbpIdentityEntityFrameworkCoreModule),
         typeof(AbpIdentityApplicationContractsModule),
         typeof(AbpIdentityServerEntityFrameworkCoreModule),
-        typeof(AbpEntityFrameworkCoreSqlServerModule),
+        typeof(AbpEntityFrameworkCoreMySQLModule),
         typeof(AbpAccountWebIdentityServerModule),
         typeof(AbpAspNetCoreMvcUiBasicThemeModule)
         )]
@@ -52,7 +52,7 @@ namespace AuthServer.Host
 
             Configure<AbpDbContextOptions>(options =>
             {
-                options.UseSqlServer();
+                options.UseMySQL();
             });
 
             Configure<AbpLocalizationOptions>(options =>
@@ -74,7 +74,13 @@ namespace AuthServer.Host
             //TODO: ConnectionMultiplexer.Connect call has problem since redis may not be ready when this service has started!
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
             context.Services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, "MsDemo-DataProtection-Keys");
+                .PersistKeysToStackExchangeRedis(redis, "MS-DataProtection-Keys");
+
+            IdentityDbContext.TablePrefix = AuthServerDbContext.DefaultTablePrefix;
+            IdentityServerDbContext.TablePrefix = AuthServerDbContext.DefaultTablePrefix;
+            AbpAuditLoggingDbContext.TablePrefix = AuthServerDbContext.DefaultTablePrefix;
+            PermissionManagementDbContext.TablePrefix = AuthServerDbContext.DefaultTablePrefix;
+            SettingManagementDbContext.TablePrefix = AuthServerDbContext.DefaultTablePrefix;
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
@@ -87,17 +93,6 @@ namespace AuthServer.Host
             app.UseAbpRequestLocalization();
             app.UseAuditing();
             app.UseMvcWithDefaultRouteAndArea();
-
-            //TODO: Problem on a clustered environment
-            using (var scope = context.ServiceProvider.CreateScope())
-            {
-                AsyncHelper.RunSync(async () =>
-                {
-                    await scope.ServiceProvider
-                        .GetRequiredService<IDataSeeder>()
-                        .SeedAsync();
-                });
-            }
         }
     }
 }

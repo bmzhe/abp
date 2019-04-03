@@ -2,7 +2,7 @@
 {
     public static class ProductManagementConsts
     {
-        public const string DefaultDbTablePrefix = "Pm";
+        public const string DefaultDbTablePrefix = "tb_";
 
         public const string DefaultDbSchema = null;
     }

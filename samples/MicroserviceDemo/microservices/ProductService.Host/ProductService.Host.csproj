@@ -23,12 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.Autofac\Volo.Abp.Autofac.csproj" />
-    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.EntityFrameworkCore.SqlServer\Volo.Abp.EntityFrameworkCore.SqlServer.csproj" />
-    <ProjectReference Include="..\..\..\..\framework\src\Volo.Abp.EventBus.RabbitMQ\Volo.Abp.EventBus.RabbitMQ.csproj" />
-    <ProjectReference Include="..\..\..\..\modules\audit-logging\src\Volo.Abp.AuditLogging.EntityFrameworkCore\Volo.Abp.AuditLogging.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\..\..\modules\permission-management\src\Volo.Abp.PermissionManagement.EntityFrameworkCore\Volo.Abp.PermissionManagement.EntityFrameworkCore.csproj" />
-    <ProjectReference Include="..\..\..\..\modules\setting-management\src\Volo.Abp.SettingManagement.EntityFrameworkCore\Volo.Abp.SettingManagement.EntityFrameworkCore.csproj" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="0.15.2" />
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.MySQL" Version="0.15.2" />
+    <PackageReference Include="Volo.Abp.EventBus.RabbitMQ" Version="0.15.2" />
+    <PackageReference Include="Volo.Abp.AuditLogging.EntityFrameworkCore" Version="0.15.2" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" Version="0.15.2" />
+    <PackageReference Include="Volo.Abp.SettingManagement.EntityFrameworkCore" Version="0.15.2" />
     <ProjectReference Include="..\..\modules\product\src\ProductManagement.Application\ProductManagement.Application.csproj" />
     <ProjectReference Include="..\..\modules\product\src\ProductManagement.EntityFrameworkCore\ProductManagement.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\..\modules\product\src\ProductManagement.HttpApi\ProductManagement.HttpApi.csproj" />

@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\framework\src\Volo.Abp.AutoMapper\Volo.Abp.AutoMapper.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\framework\src\Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared\Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.csproj" />
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="0.15.2" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared" Version="0.15.2" />
     <ProjectReference Include="..\ProductManagement.HttpApi\ProductManagement.HttpApi.csproj" />
   </ItemGroup>
 

@@ -8,7 +8,7 @@ using Volo.Abp.Auditing;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Autofac;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.SqlServer;
+using Volo.Abp.EntityFrameworkCore.MySQL;
 using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -23,7 +23,7 @@ namespace IdentityService.Host
     [DependsOn(
         typeof(AbpAutofacModule),
         typeof(AbpEventBusRabbitMqModule),
-        typeof(AbpEntityFrameworkCoreSqlServerModule),
+        typeof(AbpEntityFrameworkCoreMySQLModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpPermissionManagementEntityFrameworkCoreModule),
         typeof(AbpSettingManagementEntityFrameworkCoreModule),
@@ -67,7 +67,7 @@ namespace IdentityService.Host
 
             Configure<AbpDbContextOptions>(options =>
             {
-                options.UseSqlServer();
+                options.UseMySQL();
             });
 
             context.Services.AddDistributedRedisCache(options =>
@@ -83,7 +83,11 @@ namespace IdentityService.Host
 
             var redis = ConnectionMultiplexer.Connect(configuration["Redis:Configuration"]);
             context.Services.AddDataProtection()
-                .PersistKeysToStackExchangeRedis(redis, "MsDemo-DataProtection-Keys");
+                .PersistKeysToStackExchangeRedis(redis, "MS-DataProtection-Keys");
+
+            IdentityDbContext.TablePrefix = "tb_";
+            PermissionManagementDbContext.TablePrefix = "tb_";
+            SettingManagementDbContext.TablePrefix = "tb_";
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

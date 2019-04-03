@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProductService.Host.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitProductDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "PmProducts",
+                name: "tb_Products",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -21,28 +21,29 @@ namespace ProductService.Host.Migrations
                     Code = table.Column<string>(maxLength: 32, nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: false),
                     Price = table.Column<float>(nullable: false),
-                    StockCount = table.Column<int>(nullable: false)
+                    StockCount = table.Column<int>(nullable: false),
+                    ImageName = table.Column<string>(maxLength: 128, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PmProducts", x => x.Id);
+                    table.PrimaryKey("PK_tb_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PmProducts_Code",
-                table: "PmProducts",
+                name: "IX_tb_Products_Code",
+                table: "tb_Products",
                 column: "Code");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PmProducts_Name",
-                table: "PmProducts",
+                name: "IX_tb_Products_Name",
+                table: "tb_Products",
                 column: "Name");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PmProducts");
+                name: "tb_Products");
         }
     }
 }

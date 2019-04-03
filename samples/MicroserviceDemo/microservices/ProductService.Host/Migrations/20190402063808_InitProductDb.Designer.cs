@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductService.Host.EntityFrameworkCore;
@@ -10,16 +9,15 @@ using ProductService.Host.EntityFrameworkCore;
 namespace ProductService.Host.Migrations
 {
     [DbContext(typeof(ProductServiceMigrationDbContext))]
-    [Migration("20190121115908_Initial")]
-    partial class Initial
+    [Migration("20190402063808_InitProductDb")]
+    partial class InitProductDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("ProductManagement.Product", b =>
                 {
@@ -43,6 +41,9 @@ namespace ProductService.Host.Migrations
                     b.Property<string>("ExtraProperties")
                         .HasColumnName("ExtraProperties");
 
+                    b.Property<string>("ImageName")
+                        .HasMaxLength(128);
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnName("LastModificationTime");
 
@@ -63,7 +64,7 @@ namespace ProductService.Host.Migrations
 
                     b.HasIndex("Name");
 
-                    b.ToTable("PmProducts");
+                    b.ToTable("tb_Products");
                 });
 #pragma warning restore 612, 618
         }

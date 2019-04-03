@@ -6,6 +6,8 @@ namespace ProductService.Host.EntityFrameworkCore
 {
     public class ProductServiceMigrationDbContext : AbpDbContext<ProductServiceMigrationDbContext>
     {
+        public const string DefaultTablePrefix = "tb_";
+
         public ProductServiceMigrationDbContext(
             DbContextOptions<ProductServiceMigrationDbContext> options
             ) : base(options)
@@ -17,7 +19,7 @@ namespace ProductService.Host.EntityFrameworkCore
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ConfigureProductManagement();
+            modelBuilder.ConfigureProductManagement(t => t.TablePrefix = DefaultTablePrefix);
         }
     }
 }

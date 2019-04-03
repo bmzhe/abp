@@ -3,23 +3,21 @@ using System;
 using AuthServer.Host.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AuthServer.Host.Migrations
 {
     [DbContext(typeof(AuthServerDbContext))]
-    [Migration("20190209193341_Added_ApplicationName_To_AuditLogs")]
-    partial class Added_ApplicationName_To_AuditLogs
+    [Migration("20190402062857_InitIdentityDb")]
+    partial class InitIdentityDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
@@ -84,6 +82,8 @@ namespace AuthServer.Host.Migrations
                     b.Property<Guid?>("TenantId")
                         .HasColumnName("TenantId");
 
+                    b.Property<string>("TenantName");
+
                     b.Property<string>("Url")
                         .HasColumnName("Url")
                         .HasMaxLength(256);
@@ -101,7 +101,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("TenantId", "UserId", "ExecutionTime");
 
-                    b.ToTable("AbpAuditLogs");
+                    b.ToTable("tb_AuditLogs");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
@@ -141,7 +141,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("TenantId", "ServiceName", "MethodName", "ExecutionTime");
 
-                    b.ToTable("AbpAuditLogActions");
+                    b.ToTable("tb_AuditLogActions");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.EntityChange", b =>
@@ -163,6 +163,8 @@ namespace AuthServer.Host.Migrations
                         .HasColumnName("EntityId")
                         .HasMaxLength(128);
 
+                    b.Property<Guid?>("EntityTenantId");
+
                     b.Property<string>("EntityTypeFullName")
                         .IsRequired()
                         .HasColumnName("EntityTypeFullName")
@@ -180,7 +182,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("TenantId", "EntityTypeFullName", "EntityId");
 
-                    b.ToTable("AbpEntityChanges");
+                    b.ToTable("tb_EntityChanges");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.EntityPropertyChange", b =>
@@ -214,7 +216,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("EntityChangeId");
 
-                    b.ToTable("AbpEntityPropertyChanges");
+                    b.ToTable("tb_EntityPropertyChanges");
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityClaimType", b =>
@@ -252,7 +254,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbpClaimTypes");
+                    b.ToTable("tb_ClaimTypes");
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityRole", b =>
@@ -292,7 +294,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("NormalizedName");
 
-                    b.ToTable("AbpRoles");
+                    b.ToTable("tb_Roles");
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityRoleClaim", b =>
@@ -315,7 +317,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AbpRoleClaims");
+                    b.ToTable("tb_RoleClaims");
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUser", b =>
@@ -432,7 +434,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("UserName");
 
-                    b.ToTable("AbpUsers");
+                    b.ToTable("tb_Users");
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUserClaim", b =>
@@ -455,7 +457,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AbpUserClaims");
+                    b.ToTable("tb_UserClaims");
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUserLogin", b =>
@@ -478,7 +480,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("LoginProvider", "ProviderKey");
 
-                    b.ToTable("AbpUserLogins");
+                    b.ToTable("tb_UserLogins");
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUserRole", b =>
@@ -493,7 +495,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("RoleId", "UserId");
 
-                    b.ToTable("AbpUserRoles");
+                    b.ToTable("tb_UserRoles");
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUserToken", b =>
@@ -512,7 +514,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AbpUserTokens");
+                    b.ToTable("tb_UserTokens");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.ApiResources.ApiResource", b =>
@@ -539,7 +541,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdentityServerApiResources");
+                    b.ToTable("tb_ApiResources");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.ApiResources.ApiResourceClaim", b =>
@@ -551,7 +553,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ApiResourceId", "Type");
 
-                    b.ToTable("IdentityServerApiClaims");
+                    b.ToTable("tb_ApiClaims");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.ApiResources.ApiScope", b =>
@@ -575,7 +577,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ApiResourceId", "Name");
 
-                    b.ToTable("IdentityServerApiScopes");
+                    b.ToTable("tb_ApiScopes");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.ApiResources.ApiScopeClaim", b =>
@@ -590,7 +592,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ApiResourceId", "Name", "Type");
 
-                    b.ToTable("IdentityServerApiScopeClaims");
+                    b.ToTable("tb_ApiScopeClaims");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.ApiResources.ApiSecret", b =>
@@ -610,7 +612,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ApiResourceId", "Type", "Value");
 
-                    b.ToTable("IdentityServerApiSecrets");
+                    b.ToTable("tb_ApiSecrets");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.Client", b =>
@@ -641,7 +643,7 @@ namespace AuthServer.Host.Migrations
                     b.Property<bool>("BackChannelLogoutSessionRequired");
 
                     b.Property<string>("BackChannelLogoutUri")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(300);
 
                     b.Property<string>("ClientClaimsPrefix")
                         .HasMaxLength(200);
@@ -654,7 +656,7 @@ namespace AuthServer.Host.Migrations
                         .HasMaxLength(200);
 
                     b.Property<string>("ClientUri")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(300);
 
                     b.Property<string>("ConcurrencyStamp");
 
@@ -673,14 +675,14 @@ namespace AuthServer.Host.Migrations
                     b.Property<bool>("FrontChannelLogoutSessionRequired");
 
                     b.Property<string>("FrontChannelLogoutUri")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(300);
 
                     b.Property<int>("IdentityTokenLifetime");
 
                     b.Property<bool>("IncludeJwtId");
 
                     b.Property<string>("LogoUri")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(300);
 
                     b.Property<string>("PairWiseSubjectSalt")
                         .HasMaxLength(200);
@@ -708,7 +710,7 @@ namespace AuthServer.Host.Migrations
                     b.HasIndex("ClientId")
                         .IsUnique();
 
-                    b.ToTable("IdentityServerClients");
+                    b.ToTable("tb_Clients");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.ClientClaim", b =>
@@ -723,7 +725,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ClientId", "Type", "Value");
 
-                    b.ToTable("IdentityServerClientClaims");
+                    b.ToTable("tb_ClientClaims");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.ClientCorsOrigin", b =>
@@ -735,7 +737,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ClientId", "Origin");
 
-                    b.ToTable("IdentityServerClientCorsOrigins");
+                    b.ToTable("tb_ClientCorsOrigins");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.ClientGrantType", b =>
@@ -747,7 +749,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ClientId", "GrantType");
 
-                    b.ToTable("IdentityServerClientGrantTypes");
+                    b.ToTable("tb_ClientGrantTypes");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.ClientIdPRestriction", b =>
@@ -759,7 +761,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ClientId", "Provider");
 
-                    b.ToTable("IdentityServerClientIdPRestrictions");
+                    b.ToTable("tb_ClientIdPRestrictions");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.ClientPostLogoutRedirectUri", b =>
@@ -771,7 +773,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ClientId", "PostLogoutRedirectUri");
 
-                    b.ToTable("IdentityServerClientPostLogoutRedirectUris");
+                    b.ToTable("tb_ClientPostLogoutRedirectUris");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.ClientProperty", b =>
@@ -779,15 +781,15 @@ namespace AuthServer.Host.Migrations
                     b.Property<Guid>("ClientId");
 
                     b.Property<string>("Key")
-                        .HasMaxLength(250);
+                        .HasMaxLength(64);
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(2000);
+                        .HasMaxLength(128);
 
                     b.HasKey("ClientId", "Key");
 
-                    b.ToTable("IdentityServerClientProperties");
+                    b.ToTable("tb_ClientProperties");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.ClientRedirectUri", b =>
@@ -795,11 +797,11 @@ namespace AuthServer.Host.Migrations
                     b.Property<Guid>("ClientId");
 
                     b.Property<string>("RedirectUri")
-                        .HasMaxLength(2000);
+                        .HasMaxLength(200);
 
                     b.HasKey("ClientId", "RedirectUri");
 
-                    b.ToTable("IdentityServerClientRedirectUris");
+                    b.ToTable("tb_ClientRedirectUris");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.ClientScope", b =>
@@ -811,7 +813,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ClientId", "Scope");
 
-                    b.ToTable("IdentityServerClientScopes");
+                    b.ToTable("tb_ClientScopes");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Clients.ClientSecret", b =>
@@ -831,7 +833,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("ClientId", "Type", "Value");
 
-                    b.ToTable("IdentityServerClientSecrets");
+                    b.ToTable("tb_ClientSecrets");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.Grants.PersistedGrant", b =>
@@ -868,7 +870,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("SubjectId", "ClientId", "Type");
 
-                    b.ToTable("IdentityServerPersistedGrants");
+                    b.ToTable("tb_PersistedGrants");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.IdentityResources.IdentityClaim", b =>
@@ -880,7 +882,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("IdentityResourceId", "Type");
 
-                    b.ToTable("IdentityServerIdentityClaims");
+                    b.ToTable("tb_IdentityClaims");
                 });
 
             modelBuilder.Entity("Volo.Abp.IdentityServer.IdentityResources.IdentityResource", b =>
@@ -913,7 +915,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdentityServerIdentityResources");
+                    b.ToTable("tb_IdentityResources");
                 });
 
             modelBuilder.Entity("Volo.Abp.PermissionManagement.PermissionGrant", b =>
@@ -939,7 +941,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("Name", "ProviderName", "ProviderKey");
 
-                    b.ToTable("AbpPermissionGrants");
+                    b.ToTable("tb_PermissionGrants");
                 });
 
             modelBuilder.Entity("Volo.Abp.SettingManagement.Setting", b =>
@@ -965,7 +967,7 @@ namespace AuthServer.Host.Migrations
 
                     b.HasIndex("Name", "ProviderName", "ProviderKey");
 
-                    b.ToTable("AbpSettings");
+                    b.ToTable("tb_Settings");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>

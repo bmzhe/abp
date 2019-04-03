@@ -50,7 +50,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
       - ReRoutes__0__DownstreamHostAndPorts__0__Host=identity-service
       - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
@@ -69,7 +69,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - RemoteServices__Default__BaseUrl=http://backend-admin-app-gateway/
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
       - ReRoutes__0__DownstreamHostAndPorts__0__Host=identity-service
       - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
@@ -85,7 +85,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
       - ReRoutes__0__DownstreamHostAndPorts__0__Host=product-service
       - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
@@ -101,8 +101,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - ConnectionStrings__Blogging=mongodb://mongodb|MsDemo_Blogging
+      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Blogging=mongodb://mongodb|ms_Blogging
       - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
       - RemoteServices__Default__BaseUrl=http://internal-gateway/
@@ -115,7 +115,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
@@ -127,8 +127,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
-      - ConnectionStrings__ProductManagement=Server=sqlserver;Database=MsDemo_ProductManagement;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__ProductManagement=Server=sqlserver;Database=ms_ProductManagement;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
@@ -139,7 +139,7 @@ services:
       - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:51511
-      - ConnectionStrings__Default=Server=sqlserver;Database=MsDemo_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
+      - ConnectionStrings__Default=Server=sqlserver;Database=ms_Identity;Trusted_Connection=True;MultipleActiveResultSets=true;User=sa;Password=yourStrong(!)Password;Integrated Security=false
       - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
