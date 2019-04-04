@@ -98,7 +98,7 @@ namespace BackendAdminApp.Host
             app.UseCorrelationId();
             app.UseVirtualFiles();
             app.UseAuthentication();
-            app.UseAbpRequestLocalization();
+            // app.UseAbpRequestLocalization();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {

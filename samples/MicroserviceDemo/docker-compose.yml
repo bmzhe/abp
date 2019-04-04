@@ -9,8 +9,8 @@ services:
 #  mongodb:
 #    image: mongo
 #  
-#  rabbitmq:
-#    image: 'rabbitmq:3-management-alpine'
+  rabbitmq:
+    image: 'rabbitmq:3-management-alpine'
 #
 #  redis:
 #    image: redis
@@ -31,7 +31,7 @@ services:
 #      - elasticsearch
 
   internal-gateway:
-    image: 'volosoft/microservice-demo-internal-gateway:${TAG:-latest}'
+    image: 'ezy/ms-internal-gateway:${TAG:-latest}'
     build:
       context: ../../
       dockerfile: samples/MicroserviceDemo/gateways/InternalGateway.Host/Dockerfile
@@ -44,7 +44,7 @@ services:
       - blogging-service
   
   backend-admin-app-gateway:
-    image: 'volosoft/microservice-demo-backend-admin-app-gateway:${TAG:-latest}'
+    image: 'ezy/ms-backend-admin-app-gateway:${TAG:-latest}'
     build:
       context: ../../
       dockerfile: samples/MicroserviceDemo/gateways/BackendAdminAppGateway.Host/Dockerfile
@@ -56,7 +56,7 @@ services:
       - product-service
   
   public-website-gateway:
-    image: 'volosoft/microservice-demo-public-website-gateway:${TAG:-latest}'
+    image: 'ezy/ms-public-website-gateway:${TAG:-latest}'
     build:
       context: ../../
       dockerfile: samples/MicroserviceDemo/gateways/PublicWebSiteGateway.Host/Dockerfile
@@ -67,49 +67,49 @@ services:
       - product-service
   
   blogging-service:
-    image: 'volosoft/microservice-demo-blogging-service:${TAG:-latest}'
+    image: 'ezy/ms-blogging-service:${TAG:-latest}'
     build:
       context: ../../
       dockerfile: samples/MicroserviceDemo/microservices/BloggingService.Host/Dockerfile
-    depends_on:
+#    depends_on:
 #      - elasticsearch
 #      - mongodb
 #      - redis
   
   identity-service:
-    image: 'volosoft/microservice-demo-identity-service:${TAG:-latest}'
+    image: 'ezy/ms-identity-service:${TAG:-latest}'
     build:
       context: ../../
       dockerfile: samples/MicroserviceDemo/microservices/IdentityService.Host/Dockerfile
     depends_on:
 #      - elasticsearch
-#      - rabbitmq
+      - rabbitmq
 #      - redis
 #      - sqlserver
   
   product-service:
-    image: 'volosoft/microservice-demo-product-service:${TAG:-latest}'
+    image: 'ezy/ms-product-service:${TAG:-latest}'
     build:
       context: ../../
       dockerfile: samples/MicroserviceDemo/microservices/ProductService.Host/Dockerfile
-    depends_on:
+#    depends_on:
 #      - elasticsearch
 #      - sqlserver
 #      - redis
   
   auth-server:
-    image: 'volosoft/microservice-demo-auth-server:${TAG:-latest}'
+    image: 'ezy/ms-auth-server:${TAG:-latest}'
     build:
       context: ../../
       dockerfile: samples/MicroserviceDemo/applications/AuthServer.Host/Dockerfile
     depends_on:
 #      - elasticsearch
 #      - redis
-#      - rabbitmq
+      - rabbitmq
       - identity-service
   
   backend-admin-app:
-    image: 'volosoft/microservice-demo-backend-admin-app:${TAG:-latest}'
+    image: 'ezy/ms-backend-admin-app:${TAG:-latest}'
     build:
       context: ../../
       dockerfile: samples/MicroserviceDemo/applications/BackendAdminApp.Host/Dockerfile
@@ -118,7 +118,7 @@ services:
       - backend-admin-app-gateway
   
   public-website:
-    image: 'volosoft/microservice-demo-public-website:${TAG:-latest}'
+    image: 'ezy/ms-public-website:${TAG:-latest}'
     build:
       context: ../../
       dockerfile: samples/MicroserviceDemo/applications/PublicWebSite.Host/Dockerfile

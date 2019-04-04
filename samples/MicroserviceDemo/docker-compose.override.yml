@@ -11,12 +11,12 @@ services:
 #    ports:
 #      - "27017"
 #
-#  172.16.168.183:
-#    ports:
-#      - "15672"
-#      - "5672"
+  rabbitmq:
+    ports:
+      - "15672"
+      - "5672"
 #
-#  172.16.168.193:32379,ssl=false,password=Zykj2017:
+#  redis:
 #    ports:
 #      - "6379"
 #
@@ -102,9 +102,9 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
       - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
-      - ConnectionStrings__Blogging=mongodb://mongodb|ms_Blogging
+      - ConnectionStrings__Blogging=mongodb://admin:xm%40mongo@139.196.120.4:27017|ms_Blogging
       - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
-      - RabbitMQ__Connections__Default__HostName=172.16.168.183
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
       - RemoteServices__Default__BaseUrl=http://internal-gateway/
     ports:
       - 51521:80
@@ -117,7 +117,7 @@ services:
       - AuthServer__Authority=http://auth-server:51511
       - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
       - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
-      - RabbitMQ__Connections__Default__HostName=172.16.168.183
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
       - 51522:80
 
@@ -130,7 +130,7 @@ services:
       - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
       - ConnectionStrings__ProductManagement=Server=172.16.168.230; Database=ms.product;User Id=dev; Password=123456
       - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
-      - RabbitMQ__Connections__Default__HostName=172.16.168.183
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
       - 51523:80
 
@@ -141,7 +141,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:51511
       - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
       - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
-      - RabbitMQ__Connections__Default__HostName=172.16.168.183
+      - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
       - 51511:51511
 
