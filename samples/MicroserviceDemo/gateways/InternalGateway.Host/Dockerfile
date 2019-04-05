@@ -3,9 +3,9 @@ WORKDIR /app
 EXPOSE 80
 
 FROM microsoft/dotnet:2.2-sdk-alpine AS build
-WORKDIR /src
-COPY . .
-WORKDIR "/src/samples/MicroserviceDemo/gateways/InternalGateway.Host"
+WORKDIR /
+COPY ./ .
+WORKDIR "gateways/InternalGateway.Host"
 RUN dotnet restore -s http://nuget.juniux.com -s https://api.nuget.org/v3/index.json -nowarn:msb3202,nu1503
 RUN dotnet build --no-restore -c Release -o /app
 

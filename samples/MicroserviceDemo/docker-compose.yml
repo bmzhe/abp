@@ -33,8 +33,8 @@ services:
   internal-gateway:
     image: 'ezy/ms-internal-gateway:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: samples/MicroserviceDemo/gateways/InternalGateway.Host/Dockerfile
+      context: .
+      dockerfile: ./gateways/InternalGateway.Host/Dockerfile
     depends_on:
 #      - elasticsearch
 #      - redis
@@ -46,8 +46,8 @@ services:
   backend-admin-app-gateway:
     image: 'ezy/ms-backend-admin-app-gateway:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: samples/MicroserviceDemo/gateways/BackendAdminAppGateway.Host/Dockerfile
+      context: .
+      dockerfile: ./gateways/BackendAdminAppGateway.Host/Dockerfile
     depends_on:
 #      - elasticsearch
 #      - redis
@@ -58,8 +58,8 @@ services:
   public-website-gateway:
     image: 'ezy/ms-public-website-gateway:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: samples/MicroserviceDemo/gateways/PublicWebSiteGateway.Host/Dockerfile
+      context: .
+      dockerfile: ./gateways/PublicWebSiteGateway.Host/Dockerfile
     depends_on:
 #      - elasticsearch
 #      - redis
@@ -69,8 +69,8 @@ services:
   blogging-service:
     image: 'ezy/ms-blogging-service:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: samples/MicroserviceDemo/microservices/BloggingService.Host/Dockerfile
+      context: .
+      dockerfile: ./microservices/BloggingService.Host/Dockerfile
 #    depends_on:
 #      - elasticsearch
 #      - mongodb
@@ -79,8 +79,8 @@ services:
   identity-service:
     image: 'ezy/ms-identity-service:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: samples/MicroserviceDemo/microservices/IdentityService.Host/Dockerfile
+      context: .
+      dockerfile: ./microservices/IdentityService.Host/Dockerfile
     depends_on:
 #      - elasticsearch
       - rabbitmq
@@ -90,8 +90,8 @@ services:
   product-service:
     image: 'ezy/ms-product-service:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: samples/MicroserviceDemo/microservices/ProductService.Host/Dockerfile
+      context: .
+      dockerfile: ./microservices/ProductService.Host/Dockerfile
 #    depends_on:
 #      - elasticsearch
 #      - sqlserver
@@ -100,8 +100,8 @@ services:
   auth-server:
     image: 'ezy/ms-auth-server:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: samples/MicroserviceDemo/applications/AuthServer.Host/Dockerfile
+      context: .
+      dockerfile: ./applications/AuthServer.Host/Dockerfile
     depends_on:
 #      - elasticsearch
 #      - redis
@@ -111,8 +111,8 @@ services:
   backend-admin-app:
     image: 'ezy/ms-backend-admin-app:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: samples/MicroserviceDemo/applications/BackendAdminApp.Host/Dockerfile
+      context: .
+      dockerfile: ./applications/BackendAdminApp.Host/Dockerfile
     depends_on:
 #      - elasticsearch
       - backend-admin-app-gateway
@@ -120,8 +120,8 @@ services:
   public-website:
     image: 'ezy/ms-public-website:${TAG:-latest}'
     build:
-      context: ../../
-      dockerfile: samples/MicroserviceDemo/applications/PublicWebSite.Host/Dockerfile
+      context: .
+      dockerfile: ./applications/PublicWebSite.Host/Dockerfile
     depends_on:
 #      - elasticsearch
       - public-website-gateway

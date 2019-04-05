@@ -90,7 +90,7 @@ namespace PublicWebSite.Host
             app.UseCorrelationId();
             app.UseVirtualFiles();
             app.UseAuthentication();
-            app.UseAbpRequestLocalization();
+            //app.UseAbpRequestLocalization();
             app.UseMvcWithDefaultRouteAndArea();
         }
     }
