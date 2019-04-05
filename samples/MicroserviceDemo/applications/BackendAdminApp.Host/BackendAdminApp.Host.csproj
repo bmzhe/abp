@@ -24,15 +24,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Autofac" Version="0.15.4" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.Client" Version="0.15.4" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Authentication.OAuth" Version="0.15.4" />
-    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="0.15.4" />
-    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="0.15.4" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" Version="0.15.4" />
-    <PackageReference Include="Volo.Abp.Identity.HttpApi.Client" Version="0.15.4" />
-    <PackageReference Include="Volo.Abp.Identity.Web" Version="0.15.4" />
-    <PackageReference Include="Volo.Blogging.Application.Contracts" Version="0.15.4" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="0.15.5" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.Client" Version="0.15.5" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Authentication.OAuth" Version="0.15.5" />
+    <PackageReference Include="Volo.Abp.Http.Client.IdentityModel" Version="0.15.5" />
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic" Version="0.15.5" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.HttpApi.Client" Version="0.15.5" />
+    <PackageReference Include="Volo.Abp.Identity.HttpApi.Client" Version="0.15.5" />
+    <PackageReference Include="Volo.Abp.Identity.Web" Version="0.15.5" />
+    <PackageReference Include="Volo.Blogging.Application.Contracts" Version="0.15.5" />
     <ProjectReference Include="..\..\modules\product\src\ProductManagement.HttpApi.Client\ProductManagement.HttpApi.Client.csproj" />
     <ProjectReference Include="..\..\modules\product\src\ProductManagement.Web\ProductManagement.Web.csproj" />
   </ItemGroup>
