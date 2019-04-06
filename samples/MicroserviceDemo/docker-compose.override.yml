@@ -15,10 +15,10 @@ services:
     ports:
       - "15672"
       - "5672"
-#
-#  redis:
-#    ports:
-#      - "6379"
+
+  redis:
+    ports:
+      - "6379"
 #
 #  elasticsearch:
 #    volumes:
@@ -50,8 +50,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
-      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - ConnectionStrings__Default=Server=139.196.120.4; Database=ms.identity;User Id=root; Password=xm@123465Ok
+      - Redis__Configuration=redis
       - ReRoutes__0__DownstreamHostAndPorts__0__Host=identity-service
       - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
       - ReRoutes__1__DownstreamHostAndPorts__0__Host=product-service
@@ -69,8 +69,8 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - RemoteServices__Default__BaseUrl=http://backend-admin-app-gateway/
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
-      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - ConnectionStrings__Default=Server=139.196.120.4; Database=ms.identity;User Id=root; Password=xm@123465Ok
+      - Redis__Configuration=redis
       - ReRoutes__0__DownstreamHostAndPorts__0__Host=identity-service
       - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
       - ReRoutes__1__DownstreamHostAndPorts__0__Host=product-service
@@ -85,8 +85,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
-      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - ConnectionStrings__Default=Server=139.196.120.4; Database=ms.identity;User Id=root; Password=xm@123465Ok
+      - Redis__Configuration=redis
       - ReRoutes__0__DownstreamHostAndPorts__0__Host=product-service
       - ReRoutes__0__DownstreamHostAndPorts__0__Port=80
       - ReRoutes__1__DownstreamHostAndPorts__0__Host=blogging-service
@@ -101,9 +101,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
+      - ConnectionStrings__Default=Server=139.196.120.4; Database=ms.identity;User Id=root; Password=xm@123465Ok
       - ConnectionStrings__Blogging=mongodb://admin:xm%40mongo@139.196.120.4:27017|ms_Blogging
-      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
       - RemoteServices__Default__BaseUrl=http://internal-gateway/
     ports:
@@ -115,8 +115,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
-      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - ConnectionStrings__Default=Server=139.196.120.4; Database=ms.identity;User Id=root; Password=xm@123465Ok
+      - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
       - 51522:80
@@ -127,9 +127,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
-      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
+      - ConnectionStrings__Default=Server=139.196.120.4; Database=ms.identity;User Id=root; Password=xm@123465Ok
       - ConnectionStrings__ProductManagement=Server=172.16.168.230; Database=ms.product;User Id=dev; Password=123456
-      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
       - 51523:80
@@ -139,8 +139,8 @@ services:
 #      - ElasticSearch__Url=http://elasticsearch:9200
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:51511
-      - ConnectionStrings__Default=Server=172.16.168.230; Database=ms.identity;User Id=dev; Password=123456
-      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - ConnectionStrings__Default=Server=139.196.120.4; Database=ms.identity;User Id=root; Password=xm@123465Ok
+      - Redis__Configuration=redis
       - RabbitMQ__Connections__Default__HostName=rabbitmq
     ports:
       - 51511:51511
@@ -152,7 +152,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
       - RemoteServices__Default__BaseUrl=http://backend-admin-app-gateway/
-      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - Redis__Configuration=redis
     ports:
       - 51512:80
 
@@ -163,6 +163,6 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - AuthServer__Authority=http://auth-server:51511
       - RemoteServices__Default__BaseUrl=http://public-website-gateway/
-      - Redis__Configuration=172.16.168.193:32379,ssl=false,password=Zykj2017
+      - Redis__Configuration=redis
     ports:
       - 51513:80
