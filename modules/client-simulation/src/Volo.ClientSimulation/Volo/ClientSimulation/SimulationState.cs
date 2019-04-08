@@ -1,4 +1,8 @@
-﻿namespace Volo.ClientSimulation
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Volo.ClientSimulation
 {
     public enum SimulationState
     {

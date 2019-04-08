@@ -1,157 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
-using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 using Volo.ClientSimulation.Clients;
 using Volo.ClientSimulation.Scenarios;
-using Volo.ClientSimulation.Snapshot;
 
 namespace Volo.ClientSimulation
 {
     public class Simulation : ISingletonDependency, IDisposable
     {
-        public ILogger<Simulation> Logger { get; set; }
+        public SimulationState State { get; private set; }
 
-        public SimulationState State
-        {
-            get => _state;
-            private set => _state = value;
-        }
-        private volatile SimulationState _state;
+        public List<IDisposableClientHandler> ActiveClients { get; }
 
-        public List<IClient> Clients { get; }
+        protected IClientFactory ClientFactory { get; }
 
         protected ClientSimulationOptions Options { get; }
-        protected IServiceScopeFactory ServiceScopeFactory { get; }
-        protected IServiceScope ServiceScope { get; private set; }
-        protected object SyncObj { get; } = new object();
+
+        protected IServiceScope ServiceScope { get; }
+
+        protected readonly object SyncObj = new object();
 
         public Simulation(
+            IClientFactory clientFactory, 
             IServiceScopeFactory serviceScopeFactory,
             IOptions<ClientSimulationOptions> options)
         {
-            ServiceScopeFactory = serviceScopeFactory;
+            ClientFactory = clientFactory;
             Options = options.Value;
+            ServiceScope = serviceScopeFactory.CreateScope();
+            ActiveClients = new List<IDisposableClientHandler>();
 
-            Logger = NullLogger<Simulation>.Instance;
+            foreach (var scenarioConfiguration in Options.Scenarios)
+            {
+                for (int i = 0; i < scenarioConfiguration.ClientCount; i++)
+                {
+                    var scenario = (IScenario) ServiceScope.ServiceProvider.GetRequiredService(
+                        scenarioConfiguration.ScenarioType
+                    );
 
-            Clients = new List<IClient>();
+                    ActiveClients.Add(ClientFactory.Create(scenario));
+                }
+            }
         }
 
-        public virtual void Start()
+        public void Start()
         {
             lock (SyncObj)
             {
-                if (State != SimulationState.Stopped)
-                {
-                    throw new UserFriendlyException($"Simulation should be stopped to be able to start. Current state is '{State}'.");
-                }
-
                 State = SimulationState.Starting;
 
-                try
+                foreach (var clientHandler in ActiveClients)
                 {
-                    DisposeResources();
-                    ServiceScope = ServiceScopeFactory.CreateScope();
-
-                    foreach (var scenarioConfiguration in Options.Scenarios)
-                    {
-                        for (int i = 0; i < scenarioConfiguration.ClientCount; i++)
-                        {
-                            var scenario = (Scenario)ServiceScope.ServiceProvider.GetRequiredService(
-                                scenarioConfiguration.ScenarioType
-                            );
-
-                            var client = ServiceScope.ServiceProvider.GetRequiredService<IClient>();
-                            client.Stopped += Client_OnStopped;
-                            client.Initialize(scenario);
-                            Clients.Add(client);
-                        }
-                    }
-
-                    foreach (var client in Clients)
-                    {
-                        client.Start();
-                    }
-
-                    State = SimulationState.Started;
+                    clientHandler.Client.Start();
                 }
-                catch(Exception ex)
-                {
-                    Logger.LogException(ex);
-                    State = SimulationState.Stopped;
-                }
+
+                State = SimulationState.Started;
             }
         }
 
-        public virtual void Stop()
+        public void Stop()
         {
             lock (SyncObj)
             {
-                if (State != SimulationState.Started)
-                {
-                    throw new UserFriendlyException($"Simulation should be started to be able to stop. Current state is '{State}'.");
-                }
-
                 State = SimulationState.Stopping;
 
-                foreach (var client in Clients)
+                foreach (var activeClient in ActiveClients)
                 {
-                    client.Stop();
+                    activeClient.Client.Stop();
                 }
+
+                State = SimulationState.Stopped;
             }
         }
 
-        public virtual SimulationSnapshot CreateSnapshot()
+        public void Dispose()
         {
-            SimulationSnapshot snapshot;
-
-            lock (SyncObj)
-            {
-                snapshot = new SimulationSnapshot
-                {
-                    State = State,
-                    Clients = Clients
-                        .Select(c => c.CreateSnapshot())
-                        .ToList()
-                };
-            }
-
-            snapshot.CreateSummaries();
-
-            return snapshot;
-        }
-
-        public virtual void Dispose()
-        {
-            DisposeResources();
-        }
-
-        protected virtual void Client_OnStopped(object sender, EventArgs e)
-        {
-            lock (SyncObj)
-            {
-                if (Clients.All(c => c.State == ClientState.Stopped))
-                {
-                    OnStopped();
-                }
-            }
-        }
-
-        private void OnStopped()
-        {
-            State = SimulationState.Stopped;
-        }
-
-        private void DisposeResources()
-        {
-            Clients.Clear();
-            ServiceScope?.Dispose();
+            ServiceScope.Dispose();
         }
     }
 }

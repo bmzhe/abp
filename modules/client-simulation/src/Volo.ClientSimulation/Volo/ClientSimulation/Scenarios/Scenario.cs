@@ -1,102 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Collections.Immutable;
 using Volo.Abp.DependencyInjection;
-using Volo.ClientSimulation.Snapshot;
 
 namespace Volo.ClientSimulation.Scenarios
 {
-    public abstract class Scenario : ITransientDependency
+    public abstract class Scenario : IScenario, ITransientDependency
     {
-        protected List<ScenarioStep> Steps { get; }
+        public IReadOnlyList<IScenarioStep> Steps => StepList.ToImmutableList();
+        protected List<IScenarioStep> StepList { get; }
 
-        protected ScenarioStep CurrentStep
+        public IScenarioStep CurrentStep
         {
             get
             {
                 CheckStepCount();
-                return Steps[CurrentStepIndex];
+                return StepList[CurrentStepIndex];
             }
         }
+        public int CurrentStepIndex { get; protected set; }
 
-        protected int CurrentStepIndex { get; set; }
-
-        protected ScenarioExecutionContext ExecutionContext { get; }
-
-        protected Scenario(IServiceProvider serviceProvider)
+        protected Scenario()
         {
-            ExecutionContext = new ScenarioExecutionContext(serviceProvider);
-            Steps = new List<ScenarioStep>();
+            StepList = new List<IScenarioStep>();
         }
 
         public virtual string GetDisplayText()
         {
-            var displayNameAttr = GetType()
-                .GetCustomAttributes(true)
-                .OfType<DisplayNameAttribute>()
-                .FirstOrDefault();
-
-            if (displayNameAttr != null)
-            {
-                return displayNameAttr.DisplayName;
-            }
-
             return GetType()
                 .Name
                 .RemovePostFix(nameof(Scenario));
         }
 
-        public virtual async Task ProceedAsync()
+        public virtual void Proceed()
         {
             CheckStepCount();
 
-            await Steps[CurrentStepIndex].RunAsync(ExecutionContext);
+            StepList[CurrentStepIndex].Run();
 
             CurrentStepIndex++;
 
-            if (CurrentStepIndex >= Steps.Count)
+            if (CurrentStepIndex >= StepList.Count)
             {
                 CurrentStepIndex = 0;
             }
         }
 
-        public void Reset()
-        {
-            CurrentStepIndex = 0;
-
-            foreach (var step in Steps)
-            {
-                step.Reset();
-            }
-
-            ExecutionContext.Reset();
-        }
-
-        public ScenarioSnapshot CreateSnapshot()
-        {
-            return new ScenarioSnapshot
-            {
-                DisplayText = GetDisplayText(),
-                Steps = Steps.Select(s => s.CreateSnapshot()).ToList(),
-                CurrentStep = CurrentStep.CreateSnapshot()
-            };
-        }
-
-        protected void AddStep(ScenarioStep step)
-        {
-            Steps.Add(step);
-        }
-
         private void CheckStepCount()
         {
-            if (Steps.Count <= 0)
+            if (StepList.Count <= 0)
             {
                 throw new ApplicationException(
                     $"No Steps added to the scenario '{GetDisplayText()}'"
                 );
             }
+        }
+
+        protected void AddStep(IScenarioStep step)
+        {
+            StepList.Add(step);
         }
     }
 }
