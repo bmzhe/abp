@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Threading;
+using Volo.Abp;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Threading;
 using Volo.ClientSimulation.Scenarios;
+using Volo.ClientSimulation.Snapshot;
 
 namespace Volo.ClientSimulation.Clients
 {
-    public class Client : IClient
+    public class Client : IClient, ITransientDependency
     {
-        public IScenario Scenario { get; }
+        public event EventHandler Stopped;
 
         public ClientState State
         {
@@ -15,13 +19,22 @@ namespace Volo.ClientSimulation.Clients
         }
         private volatile ClientState _state;
 
-        private Thread _thread;
+        protected Scenario Scenario { get; private set; }
+        protected object SyncLock { get; } = new object();
 
-        protected readonly object SyncLock = new object();
+        protected Thread ClientThread;
 
-        public Client(IScenario scenario)
+        public void Initialize(Scenario scenario)
         {
-            Scenario = scenario;
+            lock (SyncLock)
+            {
+                if (State != ClientState.Stopped)
+                {
+                    throw new UserFriendlyException($"Client should be stopped to be able to initialize it. Current state is '{State}'.");
+                }
+
+                Scenario = scenario;
+            }
         }
 
         public void Start()
@@ -30,13 +43,14 @@ namespace Volo.ClientSimulation.Clients
             {
                 if (State != ClientState.Stopped)
                 {
-                    throw new ApplicationException("State is not stopped. It is " + State);
+                    throw new UserFriendlyException($"Client should be stopped to be able to start it. Current state is '{State}'.");
                 }
 
                 State = ClientState.Running;
 
-                _thread = new Thread(Run);
-                _thread.Start();
+                Scenario.Reset();
+                ClientThread = new Thread(Run);
+                ClientThread.Start();
             }
         }
 
@@ -53,14 +67,35 @@ namespace Volo.ClientSimulation.Clients
             }
         }
 
+        public ClientSnapshot CreateSnapshot()
+        {
+            lock (SyncLock)
+            {
+                return new ClientSnapshot
+                {
+                    State = State,
+                    Scenario = Scenario.CreateSnapshot()
+                };
+            }
+        }
+
         private void Run()
         {
-            while (State == ClientState.Running)
+            while (true)
             {
-                Scenario.Proceed();
-            }
+                lock (SyncLock)
+                {
+                    if (State != ClientState.Running)
+                    {
+                        State = ClientState.Stopped;
+                        ClientThread = null;
+                        Stopped.InvokeSafely(this);
+                        break;
+                    }
+                }
 
-            State = ClientState.Stopped;
+                AsyncHelper.RunSync(() => Scenario.ProceedAsync());
+            }
         }
     }
 }

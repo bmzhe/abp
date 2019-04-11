@@ -1,24 +1,29 @@
-﻿using System.Threading;
+﻿using System.Threading.Tasks;
 
 namespace Volo.ClientSimulation.Scenarios
 {
     public class SleepScenarioStep : ScenarioStep
     {
+        public string Name { get; }
+
         public int Duration { get; }
 
-        public SleepScenarioStep(int duration = 1000)
+        public SleepScenarioStep(
+            string name, 
+            int duration = 1000)
         {
+            Name = name;
             Duration = duration;
         }
 
-        public override void Run()
+        protected override Task ExecuteAsync(ScenarioExecutionContext context)
         {
-            Thread.Sleep(Duration);
+            return Task.Delay(Duration);
         }
 
         public override string GetDisplayText()
         {
-            return base.GetDisplayText() + $" ({Duration})";
+            return base.GetDisplayText() + $" ({Name})";
         }
     }
 }

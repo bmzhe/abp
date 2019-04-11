@@ -1,15 +1,21 @@
-﻿using Volo.ClientSimulation.Scenarios;
+﻿using System;
+using Volo.ClientSimulation.Scenarios;
+using Volo.ClientSimulation.Snapshot;
 
 namespace Volo.ClientSimulation.Clients
 {
     public interface IClient
     {
-        IScenario Scenario { get; }
+        event EventHandler Stopped;
 
         ClientState State { get; }
+
+        void Initialize(Scenario scenario);
 
         void Start();
 
         void Stop();
+
+        ClientSnapshot CreateSnapshot();
     }
 }
